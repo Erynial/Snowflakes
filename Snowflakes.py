@@ -157,7 +157,11 @@ def print_snowflakes_count(game, blue_count_numb_text, red_count, green_count, b
 
 def pick_random_color(game):
     colors = [game.COLORS.Khaki3, game.COLORS.Plum1, game.COLORS.Turquoise1, game.COLORS.Yellow3,
-              game.COLORS.Antiquewhite2, game.COLORS.Darksalmon, game.COLORS.Violetred3, game.COLORS.Tomato4]
+              game.COLORS.Antiquewhite2, game.COLORS.Darksalmon, game.COLORS.Violetred3, game.COLORS.Tomato4,
+              game.COLORS.Dimgray, game.COLORS.Thistle, game.COLORS.Seagreen, game.COLORS.Peachpuff,
+              game.COLORS.Hotpink, game.COLORS.Violetred, game.COLORS.Azure4, game.COLORS.Darksalmon,
+              game.COLORS.Brown3, game.COLORS.Cadetblue1, game.COLORS.Coral1, game.COLORS.Cornflowerblue,
+              game.COLORS.Mediumorchid2]
     return random.choice(colors)
 
 
@@ -165,42 +169,82 @@ def main():
     game = Canvas(canvas_width, canvas_height)
     game.set_canvas_background_color(game.COLORS.Bisque)
 
+
+    select_lang = str(input("Select language. TR-ENG : "))
+
+    if select_lang == "TR":
+        tr_start_text = game.create_text(canvas_width/2, canvas_height/2, "KAR OLUŞTURMAK İÇİN TIKLAYINIZ..")
+    if select_lang == "ENG":
+        eng_start_text = game.create_text(canvas_width/2, canvas_height/2, "CLICK TO CREATE SNOWFLAKES")
+
     game.wait_for_click()
-    summon_mario(game)
+    if select_lang == "TR":
+        game.delete(tr_start_text)
+    elif select_lang == "ENG":
+        game.delete(eng_start_text)
+
 
     for i in range(snowflake_count):
         x = random.randint(1, game.get_canvas_width() - snowflake_width)
-        y = random.randint(-1100, -15)
-        pick_color_main = random.randint(1, 30)
-        create_snowflakes(game, pick_color_main, x, y)
+        y = random.randint(-2700, -15)
+        pick_color = random.randint(1, 30)
+        create_snowflakes(game, pick_color, x, y)
         game.update()
         time.sleep(UPDATE_DELAY)
 
-    game.create_text(blue_snowflakes_text_x, blue_snowflakes_text_y, "M: ")
-    blue_count_text = game.create_text(blue_snowflakes_text_x + 15, blue_snowflakes_text_y, "0")
 
-    game.create_text(red_snowflakes_text_x, red_snowflakes_text_y, "K: ")
-    red_count_text = game.create_text(red_snowflakes_text_x + 15, red_snowflakes_text_y, "0")
+    if select_lang == "ENG":
+        game.create_text(blue_snowflakes_text_x, blue_snowflakes_text_y, "B: ")
+        blue_count_text_en = game.create_text(blue_snowflakes_text_x + 15, blue_snowflakes_text_y, "0")
 
-    game.create_text(green_snowflakes_text_x, green_snowflakes_text_y, "Y: ")
-    green_count_text = game.create_text(green_snowflakes_text_x + 15, green_snowflakes_text_y, "0")
+        game.create_text(red_snowflakes_text_x, red_snowflakes_text_y, "R: ")
+        red_count_text_en = game.create_text(red_snowflakes_text_x + 15, red_snowflakes_text_y, "0")
 
-    game.create_text(snowflakes_text_x, snowflakes_text_y, "T: ")
-    all_snows_count_text = game.create_text(snowflakes_text_x + 20, snowflakes_text_y,
-                                            snowflake_count)
+        game.create_text(green_snowflakes_text_x, green_snowflakes_text_y, "G: ")
+        green_count_text_en = game.create_text(green_snowflakes_text_x + 15, green_snowflakes_text_y, "0")
+
+        game.create_text(snowflakes_text_x, snowflakes_text_y, "A: ")
+        all_snows_count_text_en = game.create_text(snowflakes_text_x + 20, snowflakes_text_y,
+                                                snowflake_count)
+    elif select_lang == "TR":
+        game.create_text(blue_snowflakes_text_x, blue_snowflakes_text_y, "M: ")
+        blue_count_text = game.create_text(blue_snowflakes_text_x + 15, blue_snowflakes_text_y, "0")
+
+        game.create_text(red_snowflakes_text_x, red_snowflakes_text_y, "K: ")
+        red_count_text = game.create_text(red_snowflakes_text_x + 15, red_snowflakes_text_y, "0")
+
+        game.create_text(green_snowflakes_text_x, green_snowflakes_text_y, "Y: ")
+        green_count_text = game.create_text(green_snowflakes_text_x + 15, green_snowflakes_text_y, "0")
+
+        game.create_text(snowflakes_text_x, snowflakes_text_y, "T: ")
+        all_snows_count_text = game.create_text(snowflakes_text_x + 20, snowflakes_text_y,
+                                                snowflake_count)
+
+
 
     game.wait_for_click()
 
-    while True:
-        print(len(snowflakes))
-        check_snowflakes_to_send_them_back(game, blue_count_text, red_count_text, green_count_text,
-                                           all_snows_count_text)
+    if select_lang == "TR":
+        while True:
+            print(len(snowflakes))
+            check_snowflakes_to_send_them_back(game, blue_count_text, red_count_text, green_count_text,
+                                               all_snows_count_text)
+            move_snowflakes(game)
+            move_mario(game)
+            game.update()
+            time.sleep(UPDATE_DELAY)
+            print(len(snowflakes))
+    elif select_lang == "ENG":
+        while True:
+            print(len(snowflakes))
+            check_snowflakes_to_send_them_back(game, blue_count_text_en, red_count_text_en, green_count_text_en,
+                                               all_snows_count_text_en)
+            move_snowflakes(game)
+            move_mario(game)
+            game.update()
+            time.sleep(UPDATE_DELAY)
+            print(len(snowflakes))
 
-        move_snowflakes(game)
-        move_mario(game)
-        game.update()
-        time.sleep(UPDATE_DELAY)
-        print(len(snowflakes))
 
 if __name__ == '__main__':
     main()
